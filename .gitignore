@@ -33,6 +33,8 @@
 
 # CMake build directories
 build/
+out/
 
 # Maybe some VisualStudio stuff?
 .vs*/
+CMakeSettings.json
