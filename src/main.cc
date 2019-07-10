@@ -16,9 +16,17 @@ std::cerr << "curses error (" #func "): " msg << std::endl; \
 return -1; \
 } while (0)
 
-int main (int argc, char* argv[]) {
+int main () {
 	if (initscr() == NULL) CURSES_ERROR(initscr);
-	if (addstr("Hello World.") == ERR) CURSES_ERROR(addstr);
+	if (curs_set(0) == ERR) CURSES_ERROR(curs_set);
+	graph::Board board(stdscr, ' ');
+	if (board.line(0, 0, 30, 15) == ERR) {
+		endwin();
+		std::cerr << "Error drawing line" << std::endl;
+		return -1;
+	}
+	board.display();
+	refresh();
 	getch();
 	endwin();
 	return 0;
