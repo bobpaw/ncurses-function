@@ -1,3 +1,7 @@
+#ifdef HAVE_CMAKECONFIG_H
+#include <cmakeconfig.h>
+#endif
+
 #include <algorithm> // std::fill
 #include <iterator> // std::begin, std::end
 #include <stdexcept> // std::runtime_error, std::out_of_range
@@ -12,6 +16,7 @@ namespace graph {
 		w(width),
 		h(height),
 		map(height * width),
+		blank(f),
 		win(w) {
 		assert(getmaxx(w) != ERR);
 		assert(getmaxy(w) != ERR);
@@ -49,14 +54,30 @@ namespace graph {
 		}
 		return OK;
 	}
+
+	double distance(double x1, double y1, double x2, double y2) {
+		return std::sqrt(std::pow(y2 - y1, 2) + std::pow(x2 - x1, 2));
+	}
+
 	int Board::line(size_t x1, size_t y1, size_t x2, size_t y2, chartype c) my_noexcept {
 		// if (!(in_range(x1, y1) && in_range(x2, y2))) return ERR;
 		// Allow it to be way too far so it can be weird stuff
+		
+		// Naive point slope form
+#if 1
 		double m = (y2 - y1) * 1.0 / (x2 - x1);
 		for (size_t x = x1, y = 0; x <= x2 && x < w; ++x) {
 			y = static_cast<size_t>(m * (x - x1) + y1);
 			if (in_range(x, y)) operator()(x, y) = c;
 		}
+#else
+		// Other method, likely try to use distance
+#endif
+		return OK;
+	}
+	int Board::clear(bool clr_scr) {
+		std::fill(map.begin(), map.end(), blank);
+		if (clr_scr) return werase(win);
 		return OK;
 	}
 } // namespace graph

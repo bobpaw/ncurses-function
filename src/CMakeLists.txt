@@ -1,6 +1,9 @@
 # Makefile stuff
 include_directories(.)
 add_library(board OBJECT board.cc board.h)
+if (UNIX)
+target_link_libraries(board m)
+endif()
 target_compile_features(board PUBLIC cxx_auto_type cxx_return_type_deduction cxx_noexcept cxx_decltype cxx_delegating_constructors cxx_alias_templates PRIVATE cxx_trailing_return_types)
 target_include_directories(board PUBLIC "${CURSES_INCLUDE_DIRS}")
 add_executable(graph main.cc)

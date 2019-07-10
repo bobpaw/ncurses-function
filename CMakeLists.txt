@@ -76,6 +76,7 @@ check_include_file(unistd.h HAVE_UNISTD_H)
 
 # Check for libraries
 
+
 # Set options similar to autoconf ones based off FindCurses's flags
 if (USE_PDCURSES)
 	# Change PDCurses options to match FindCurses ones

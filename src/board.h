@@ -30,6 +30,7 @@ namespace graph {
 		size_t w;
 		size_t h;
 		std::vector<chartype> map;
+		chartype blank;
 		WINDOW* win;
 		static std::default_random_engine random_engine;
 		static std::uniform_int_distribution<int> random_distribution;
@@ -68,6 +69,7 @@ namespace graph {
 
 		bool in_range(size_t x, size_t y) const my_noexcept;
 		int display() const;
+		int clear(bool clr_scr = false);
 		int line(size_t x1, size_t y1, size_t x2, size_t y2, chartype c = '#') my_noexcept;
 	}; // class Board
 
