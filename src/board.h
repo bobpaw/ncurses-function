@@ -13,10 +13,20 @@
 namespace graph {
 	class Board {
 	public:
+#if defined(__cpp_alias_templates) || __cplusplus > 200704
 		using chartype = chtype;
+#else
+		typedef chtype chartype;
+#endif
 
 	private:
+
+#if defined(__cpp_alias_templates) || __cplusplus > 200704
 		using size_t = std::vector<chartype>::size_type;
+#else
+		typedef std::vector<chartype>::size_type size_t;
+#endif
+
 		size_t w;
 		size_t h;
 		std::vector<chartype> map;
@@ -39,20 +49,20 @@ namespace graph {
 
 		// Access
 #if defined(HAVE_AUTO_RETURN) || defined(HAVE_CXX14) || __cplusplus > 201400
-		auto width () const noexcept { return w; }
-		auto height () const noexcept { return h; }
+		auto width () const my_noexcept { return w; }
+		auto height () const my_noexcept { return h; }
 #else
-		decltype(w) width () const noexcept { return w; }
-		decltype(h) height () const noexcept { return h; }
+		decltype(w) width () const my_noexcept { return w; }
+		decltype(h) height () const my_noexcept { return h; }
 #endif
 
-		chartype operator[] (size_t n) const;
-		chartype& operator[] (size_t n);
+		chartype operator[] (Board::size_t n) const { return map[n]; }
+		chartype& operator[] (Board::size_t n) { return map[n]; }
 
 		chartype operator() (size_t x, size_t y) const;
 		chartype& operator() (size_t x, size_t y);
 
-		bool in_range(size_t x, size_t y) const noexcept;
+		bool in_range(size_t x, size_t y) const my_noexcept;
 	}; // class Board
 
 } // namespace graph

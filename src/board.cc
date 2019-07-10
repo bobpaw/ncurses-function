@@ -11,19 +11,17 @@ namespace graph {
 	Board::Board(size_t width, size_t height, chartype f) : w(width), h(height), map(height * width) {
 		if (f != 0) std::fill(map.begin(), map.end(), f);
 	}
-	Board::chartype Board::operator[] (Board::size_t n) const { return map[n]; }
-	Board::chartype& Board::operator[] (Board::size_t n) { return map[n]; }
 
-	Board::chartype Board::operator() (Board::size_t x, Board::size_t y) const {
+	auto Board::operator() (size_t x, size_t y) const -> chartype {
 		if (in_range(x, y)) return map[w * y + x];
 		else throw std::out_of_range("base_map::operator() out of range");
 	}
-	Board::chartype& Board::operator() (Board::size_t x, Board::size_t y) {
+	auto Board::operator() (size_t x, size_t y) -> chartype& {
 		if (in_range(x, y)) return map[w * y + x];
 		else throw std::out_of_range("base_map::operator() out of range");
 	}
 
-	bool Board::in_range(Board::size_t x, Board::size_t y) const noexcept {
-		return x < w && x >= 0 && y < h && y >= 0;
+	bool Board::in_range(size_t x, size_t y) const my_noexcept {
+		return x < w && y < h;
 	}
 } // namespace graph

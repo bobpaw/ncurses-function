@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 project(ncurses-function VERSION 0.0 LANGUAGES C CXX)
+# set(CMAKE_CXX_STANDARD 14)
 
 # Macros and stuff
 include(CheckIncludeFileCXX)
@@ -11,6 +12,9 @@ include(CheckCXXSymbolExists)
 # CXX Compile Features options
 if ($<COMPILE_FEATURES:cxx_return_type_deduction>)
 	set(HAVE_AUTO_RETURN YES)
+endif()
+if ($<COMPILE_FEATURES:cxx_noexcept)
+	set(HAVE_NOEXCEPT YES)
 endif()
 
 # Settable options, i.e. to fix issues on VisualStudio

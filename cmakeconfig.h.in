@@ -22,6 +22,16 @@
 /* define if the compiler supports auto return type */
 #cmakedefine HAVE_AUTO_RETURN
 
+/* Define if the compiler supports trailing return type */
+#cmakedefine HAVE_TRAILING_RETURN
+
+#cmakedefine HAVE_NOEXCEPT
+#if defined(HAVE_NOEXCEPT) || __cplusplus >= 201003
+#define my_noexcept noexcept
+#else
+#define my_noexcept throw()
+#endif
+
 /* Define to 1 if you have the <functional> header file. */
 #cmakedefine HAVE_FUNCTIONAL
 
