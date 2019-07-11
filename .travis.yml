@@ -3,9 +3,7 @@ language: cpp
 git:
   depth: false
 
-dist:
-- xenial
-- trusty
+dist: xenial
 
 os:
   - linux

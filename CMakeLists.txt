@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.8)
 project(ncurses-function VERSION 0.0 LANGUAGES C CXX)
 # set(CMAKE_CXX_STANDARD 14)
 
@@ -126,7 +126,11 @@ find_library(HAVE_MATH m)
 # Check for types
 check_cxx_symbol_exists(int32_t cstdint HAVE_UINT32_T)
 
-add_compile_definitions(HAVE_CMAKE_CONFIG_H)
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
+add_compile_definitions(HAVE_CMAKECONFIG_H)
+else()
+add_compile_options(-DHAVE_CMAKECONFIG_H)
+endif()
 configure_file(cmakeconfig.h.in cmakeconfig.h ESCAPE_QUOTES @ONLY)
 
 add_subdirectory(src)
