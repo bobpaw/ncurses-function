@@ -120,7 +120,8 @@
 #undef VERSION
 #endif
 
-#cmakedefine HAVE_INT32_T
+#cmakedefine HAVE_SIZEOF_INT32_T
+@SIZEOF_INT32_T_CODE@
 
 // Technically the standard doesn't require int32_t. But it does require int_fast32_t. We'll just prefer speed (over size).
 #if !(defined(HAVE_SIZEOF_INT32_T) && SIZEOF_INT32_T == 4)
