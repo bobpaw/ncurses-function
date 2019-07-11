@@ -3,9 +3,10 @@ language: cpp
 git:
   depth: false
 
+dist: xenial
+
 os:
   - linux
-    dist: xenial
   - osx
 
 addons:
