@@ -1,6 +1,6 @@
 # Makefile stuff
 include_directories(.)
-add_library(board OBJECT board.cc board.h)
+add_library(board board.cc board.h)
 if (UNIX)
 target_link_libraries(board m)
 endif()
