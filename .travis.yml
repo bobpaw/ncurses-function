@@ -17,9 +17,6 @@ addons:
       - cmake
       - ncurses-dev
 
-before_script:
-  - mkdir build
-
 script:
   - cmake -S . -B build && cmake --build build
   - echo "q" | build/src/graph
