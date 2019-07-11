@@ -5,17 +5,20 @@ git:
 
 os:
   - linux
+    dist: xenial
+    addons:
+      apt:
+        packages:
+          - ncurses-dev
   - osx
+    addons:
+      homebrew:
+        packages:
+          ncurses-dev
 
 compiler:
   - gcc
   - clang
-
-addons:
-  apt:
-    packages:
-      - cmake
-      - ncurses-dev
 
 script:
   - cmake -S . -B build && cmake --build build
