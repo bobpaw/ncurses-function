@@ -6,15 +6,15 @@ git:
 os:
   - linux
     dist: xenial
-    addons:
-      apt:
-        packages:
-          - ncurses-dev
   - osx
-    addons:
-      homebrew:
-        packages:
-          ncurses-dev
+
+addons:
+  apt:
+    packages:
+    - ncurses-dev
+  homebrew:
+    packages:
+    - ncurses-dev
 
 compiler:
   - gcc
