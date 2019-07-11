@@ -8,6 +8,8 @@ include(CheckIncludeFile)
 include(CheckCXXCompilerFlag)
 include(CheckSymbolExists)
 include(CheckCXXSymbolExists)
+include(CheckTypeSize)
+include(CMakePushCheckState)
 
 # CXX Compile Features options
 if ($<COMPILE_FEATURES:cxx_return_type_deduction>)
@@ -124,7 +126,9 @@ endif()
 find_library(HAVE_MATH m)
 
 # Check for types
-check_cxx_symbol_exists(int32_t cstdint HAVE_UINT32_T)
+cmake_reset_check_state()
+set(CMAKE_EXTRA_INCLUDE_FILES cstdint)
+check_type_size(std::int32_t SIZEOF_INT32_T LANGUAGE CXX)
 
 if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 add_compile_definitions(HAVE_CMAKECONFIG_H)
@@ -135,3 +139,4 @@ configure_file(cmakeconfig.h.in cmakeconfig.h ESCAPE_QUOTES @ONLY)
 
 add_subdirectory(src)
 # add_subdirectory(test)
+

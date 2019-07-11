@@ -123,6 +123,7 @@
 #cmakedefine HAVE_INT32_T
 
 // Technically the standard doesn't require int32_t. But it does require int_fast32_t. We'll just prefer speed (over size).
-#if !defined(HAVE_INT32_T)
+#if !(defined(HAVE_SIZEOF_INT32_T) && SIZEOF_INT32_T == 4)
 #define int32_t int_fast32_t
 #endif
+
