@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(ncurses-function VERSION 0.0 LANGUAGES C CXX)
-# set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+cmake_policy(SET CMP0067 NEW) # Use c++ standard in try_compile checks
 
 # Macros and stuff
 include(CheckIncludeFileCXX)
@@ -128,6 +130,7 @@ find_library(HAVE_MATH m)
 # Check for types
 cmake_reset_check_state()
 set(CMAKE_EXTRA_INCLUDE_FILES cstdint)
+set(CMAKE)
 check_type_size(std::int32_t SIZEOF_INT32_T LANGUAGE CXX)
 
 if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
