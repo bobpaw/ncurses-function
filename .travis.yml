@@ -1,0 +1,25 @@
+language: cpp
+
+git:
+  depth: false
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - ncurses-dev
+
+before_script:
+  - mkdir build
+
+script:
+  - cmake -S . -B build && cmake --build build
+  - echo "q" | build/src/graph
