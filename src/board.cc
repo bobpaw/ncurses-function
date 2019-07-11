@@ -59,9 +59,10 @@ namespace graph {
 		return std::sqrt(std::pow(y2 - y1, 2) + std::pow(x2 - x1, 2));
 	}
 
+	// FIXME: Doesn't work if x1 or y1 are greater than x2 or y2
 	int Board::line(size_t x1, size_t y1, size_t x2, size_t y2, chartype c) my_noexcept {
-		// if (!(in_range(x1, y1) && in_range(x2, y2))) return ERR;
-		// Allow it to be way too far so it can be weird stuff
+		if (!in_range(x1, y1)) return ERR;
+		// (x1, y1) MUST be in range
 		
 		// Naive point slope form
 #if 1
@@ -72,6 +73,51 @@ namespace graph {
 		}
 #else
 		// Other method, likely try to use distance
+		int curx = x1, cury = y1;
+		enum {none, up, right, down, left, a1, a3, c1, c3} dir;
+		// none through left should not evoke more action in the while loop below,
+		// instead running faster by drawing just the horizontal lines
+		/*
+		516   A1 U A3
+		402 = L  0 R
+		837   C1 D C3
+		*/
+		if (x2 > x1 && y2 > y1) {
+			dir = c3;
+		} else if (x2 > x1 && y2 < y1) {
+			dir = a3;
+		} else if (x2 < x1 && y2 > y1) {
+			dir = c1;
+		} else if (x2 < x1 && y2 < y1) {
+			dir = a1;
+		} else if (x2 > x1) {
+			dir = right;
+			for (int i = x1; i <= x2 && in_range(i, y1); ++i) {
+				operator()(i, y1) = c;
+			}
+			return OK;
+		} else if (x2 < x1) {
+			dir = left;
+			for (int i = x1; i >= x2 && in_range(i, y1); --i) {
+				operator()(i, y1) = c;
+			}
+			return OK;
+		} else if (y2 > y1) {
+			dir = down;
+			for (int i = y1; i <= y2 && in_range(x1, i); ++i) {
+				operator()(x1, i) = c;
+			}
+			return OK;
+		} else if (y2 < y1) {
+			dir = up;
+			for (int i = y1; i >= y2 && in_range(x1, i); --i) {
+				operator()(x1, i) = c;
+			}
+			return OK;
+		} else {
+			dir = none;
+		}
+		while (0) {}
 #endif
 		return OK;
 	}
