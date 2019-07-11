@@ -3,7 +3,9 @@ language: cpp
 git:
   depth: false
 
-dist: xenial
+dist:
+- xenial
+- trusty
 
 os:
   - linux
@@ -13,9 +15,9 @@ addons:
   apt:
     packages:
     - ncurses-dev
-  homebrew:
-    packages:
-    - ncurses-dev
+#  homebrew:
+#    packages:
+#    - ncurses-dev
 
 compiler:
   - gcc
