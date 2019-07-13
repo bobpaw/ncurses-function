@@ -26,7 +26,8 @@
 #cmakedefine HAVE_TRAILING_RETURN
 
 #cmakedefine HAVE_NOEXCEPT
-#if defined(HAVE_NOEXCEPT) || __cplusplus >= 201003
+// My use of 201003 as the date is based off of N3050's date.
+#if defined(HAVE_NOEXCEPT) || __cplusplus >= 201003L
 #define my_noexcept noexcept
 #else
 #define my_noexcept throw()

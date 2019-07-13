@@ -33,8 +33,11 @@ int main () {
 	if (keypad(stdscr, true) == ERR) CURSES_ERROR(keypad);
 	timeout(-1); // Blocking getch
 	graph::Board board(stdscr, ' ');
-	int x = COLS / 2 + 5, y = LINES / 2 + 5, ch = 0;
-	if (board.line(COLS / 2, LINES / 2, x, y) == ERR) {
+	board.set_center(COLS / 2, LINES / 2);
+	board.invert_y(true);
+	int x = 5, y = 5, ch = 0;
+	board.draw_axes();
+	if (board.line(0, 0, x, y) == ERR) {
 		endwin();
 		std::cerr << "Error drawing line" << std::endl;
 		return EXIT_FAILURE;
@@ -56,15 +59,16 @@ int main () {
 			break;
 		case KEY_UP:
 		case 'w':
-			--y;
+			++y;
 			break;
 		case KEY_DOWN:
 		case 's':
-			++y;
+			--y;
 			break;
 		}
 		if (board.clear(true) == ERR) CURSES_ERROR(erase);
-		if (board.line(COLS / 2, LINES / 2, x, y) == ERR) {
+		board.draw_axes();
+		if (board.line(0, 0, x, y) == ERR) {
 			endwin();
 			std::cerr << "Error drawing line" << std::endl;
 			return -1;

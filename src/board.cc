@@ -15,6 +15,8 @@ namespace graph {
 	Board::Board(size_t width, size_t height, chartype f, WINDOW* w): 
 		w(width),
 		h(height),
+		c_x(0),
+		c_y(0),
 		map(height * width),
 		blank(f),
 		win(w) {
@@ -22,6 +24,8 @@ namespace graph {
 		assert(getmaxy(w) != ERR);
 		assert(width <= static_cast<size_t>(getmaxx(w)));
 		assert(height <= static_cast<size_t>(getmaxy(w)));
+		opts.invx = false;
+		opts.invy = false;
 		if (f != 0) std::fill(map.begin(), map.end(), f);
 	}
 
@@ -31,24 +35,29 @@ namespace graph {
 		assert(getmaxy(w) != ERR);
 	}
 
-	auto Board::operator() (size_t x, size_t y) const -> chartype {
-		if (in_range(x, y)) return map[w * y + x];
+	auto Board::operator() (int x, int y) const -> chartype {
+		if (in_range(x, y)) return map.at(w * (c_y + y) + c_x + x);
 		else throw std::out_of_range("base_map::operator() out of range");
 	}
-	auto Board::operator() (size_t x, size_t y) -> chartype& {
-		if (in_range(x, y)) return map[w * y + x];
+	auto Board::operator() (int x, int y) -> chartype& {
+		if (in_range(x, y)) return map.at(w * (c_y + y) + c_x + x);
 		else throw std::out_of_range("base_map::operator() out of range");
 	}
 
-	bool Board::in_range(size_t x, size_t y) const my_noexcept {
-		return x < w && y < h;
+	auto Board::at (size_t x, size_t y) const -> chartype {
+		if (x < w && y < h) return map.at(w * (opts.invy ? h - y - 1: y) + (opts.invx ? w - x - 1 : x));
+		else throw std::out_of_range("base_map::operator() out of range");
+	}
+
+	bool Board::in_range(int x, int y) const my_noexcept {
+		return x >= minx() && x < maxx() && y >= miny() && y < maxy();
 	}
 
 	int Board::display () const {
 		int errorvalue;
 		for (int y = 0; static_cast<size_t>(y) < h; ++y) {
 			for (int x = 0; static_cast<size_t>(x) < w; ++x) {
-				errorvalue = mvwaddch(win, y, x, operator()(x, y));
+				errorvalue = mvwaddch(win, y, x, at(x, y));
 				if (errorvalue == ERR) return ERR;
 			}
 		}
@@ -60,15 +69,15 @@ namespace graph {
 	}
 
 	// FIXME: Doesn't work if x1 or y1 are greater than x2 or y2
-	int Board::line(size_t x1, size_t y1, size_t x2, size_t y2, chartype c) my_noexcept {
+	int Board::line(int x1, int y1, int x2, int y2, chartype c) my_noexcept {
 		if (!in_range(x1, y1)) return ERR;
 		// (x1, y1) MUST be in range
 		
 		// Naive point slope form
 #if 1
 		double m = (y2 - y1) * 1.0 / (x2 - x1);
-		for (size_t x = x1, y = 0; x <= x2 && x < w; ++x) {
-			y = static_cast<size_t>(m * (x - x1) + y1);
+		for (int x = x1, y = 0; x <= x2 && x < maxx(); ++x) {
+			y = static_cast<int>(m * (x - x1) + y1);
 			if (in_range(x, y)) operator()(x, y) = c;
 		}
 #else
@@ -76,9 +85,13 @@ namespace graph {
 			operator()(x1, y1) = c; // Guaranteed in_range by above check
 		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) < 1) {
 			double m = (y2 - y1) * 1.0 / (x2 - x1);
-			for (size_t x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
-				y = static_cast< size_t >(m * (x - x1) + y1);
-				if (in_range(x, y)) operator()(x, y) = c;
+			if (m < 0) {
+				for (int x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
+					y = static_cast<int>(m * (x - x1) + y1);
+					if (in_range(x, y)) operator()(x, y) = c;
+				}
+			} else {
+
 			}
 		} else {
 			double m = (x2 - x1) * 1.0 / (y2 - y1);
@@ -94,5 +107,16 @@ namespace graph {
 		std::fill(map.begin(), map.end(), blank);
 		if (clr_scr) return werase(win);
 		return OK;
+	}
+
+	void Board::draw_axes (bool xaxis, bool yaxis) my_noexcept {
+		if (xaxis)
+			for (int x = minx(); x < maxx(); ++x)
+				operator()(x, 0) = '-';
+		if (yaxis)
+			for (int y = miny(); y < maxy(); ++y)
+				operator()(0, y) = '|';
+		if (xaxis && yaxis)
+			operator()(0, 0) = '+';
 	}
 } // namespace graph
