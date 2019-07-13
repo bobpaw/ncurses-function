@@ -72,52 +72,21 @@ namespace graph {
 			if (in_range(x, y)) operator()(x, y) = c;
 		}
 #else
-		// Other method, likely try to use distance
-		int curx = x1, cury = y1;
-		enum {none, up, right, down, left, a1, a3, c1, c3} dir;
-		// none through left should not evoke more action in the while loop below,
-		// instead running faster by drawing just the horizontal lines
-		/*
-		516   A1 U A3
-		402 = L  0 R
-		837   C1 D C3
-		*/
-		if (x2 > x1 && y2 > y1) {
-			dir = c3;
-		} else if (x2 > x1 && y2 < y1) {
-			dir = a3;
-		} else if (x2 < x1 && y2 > y1) {
-			dir = c1;
-		} else if (x2 < x1 && y2 < y1) {
-			dir = a1;
-		} else if (x2 > x1) {
-			dir = right;
-			for (int i = x1; i <= x2 && in_range(i, y1); ++i) {
-				operator()(i, y1) = c;
+		if (x1 == x2 && y1 == y2) {
+			operator()(x1, y1) = c; // Guaranteed in_range by above check
+		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) < 1) {
+			double m = (y2 - y1) * 1.0 / (x2 - x1);
+			for (size_t x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
+				y = static_cast< size_t >(m * (x - x1) + y1);
+				if (in_range(x, y)) operator()(x, y) = c;
 			}
-			return OK;
-		} else if (x2 < x1) {
-			dir = left;
-			for (int i = x1; i >= x2 && in_range(i, y1); --i) {
-				operator()(i, y1) = c;
-			}
-			return OK;
-		} else if (y2 > y1) {
-			dir = down;
-			for (int i = y1; i <= y2 && in_range(x1, i); ++i) {
-				operator()(x1, i) = c;
-			}
-			return OK;
-		} else if (y2 < y1) {
-			dir = up;
-			for (int i = y1; i >= y2 && in_range(x1, i); --i) {
-				operator()(x1, i) = c;
-			}
-			return OK;
 		} else {
-			dir = none;
+			double m = (x2 - x1) * 1.0 / (y2 - y1);
+			for (size_t y = y1, x = 0; (y1 < y2 ? y <= y2 : y >= y2) && in_range(x, y); y += (m < 0 ? -1 : 1)) {
+				x = static_cast<size_t>(m * (y - y1) + x1);
+				if (in_range(x, y)) operator()(x, y) = c;
+			}
 		}
-		while (0) {}
 #endif
 		return OK;
 	}

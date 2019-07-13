@@ -24,8 +24,8 @@ int main () {
 	if (keypad(stdscr, true) == ERR) CURSES_ERROR(keypad);
 	timeout(-1); // Blocking getch
 	graph::Board board(stdscr, ' ');
-	int x = 30, y = 15, ch = 0;
-	if (board.line(0, 0, 30, 15) == ERR) {
+	int x = COLS / 2 + 5, y = LINES / 2 + 5, ch = 0;
+	if (board.line(COLS / 2, LINES / 2, x, y) == ERR) {
 		endwin();
 		std::cerr << "Error drawing line" << std::endl;
 		return -1;
@@ -55,7 +55,7 @@ int main () {
 			break;
 		}
 		if (board.clear(true) == ERR) CURSES_ERROR(erase);
-		if (board.line(0, 0, x, y) == ERR) {
+		if (board.line(COLS / 2, LINES / 2, x, y) == ERR) {
 			endwin();
 			std::cerr << "Error drawing line" << std::endl;
 			return -1;
