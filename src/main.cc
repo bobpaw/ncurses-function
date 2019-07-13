@@ -1,4 +1,5 @@
 #include <iostream> // std::cerr
+#include <cstdlib> // std::atexit, EXIT_SUCCESS, EXIT_FAILURE
 
 #include "correct_curses.h"
 
@@ -7,16 +8,24 @@
 #define CURSES_ERROR(func) do { \
 if (!isendwin()) endwin(); \
 std::cerr << "curses error (" #func ")." << std::endl; \
-return -1; \
+return EXIT_FAILURE; \
 } while (0)
 
 #define CURSES_ERRORM(func, msg) do { \
 if (!isendwin()) endwin(); \
 std::cerr << "curses error (" #func "): " msg << std::endl; \
-return -1; \
+return EXIT_FAILURE; \
 } while (0)
 
+void exit_func () {
+	if (!isendwin()) endwin();
+}
+
 int main () {
+	if (std::atexit(exit_func) != 0) {
+		std::cerr << "atexit failure" << std::endl;
+		return EXIT_FAILURE;
+	}
 	if (initscr() == NULL) CURSES_ERROR(initscr);
 	if (curs_set(0) == ERR) CURSES_ERROR(curs_set);
 	if (noecho() == ERR) CURSES_ERROR(noecho);
@@ -28,7 +37,7 @@ int main () {
 	if (board.line(COLS / 2, LINES / 2, x, y) == ERR) {
 		endwin();
 		std::cerr << "Error drawing line" << std::endl;
-		return -1;
+		return EXIT_FAILURE;
 	}
 	board.display();
 	if (refresh() == ERR) CURSES_ERROR(refresh);
@@ -64,5 +73,5 @@ int main () {
 		refresh();
 	} while (ch != 'q');
 	endwin();
-	return 0;
+	return EXIT_SUCCESS;
 }
