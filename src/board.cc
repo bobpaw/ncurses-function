@@ -68,7 +68,6 @@ namespace graph {
 		return std::sqrt(std::pow(y2 - y1, 2) + std::pow(x2 - x1, 2));
 	}
 
-	// FIXME: Doesn't work if x1 or y1 are greater than x2 or y2
 	int Board::line(int x1, int y1, int x2, int y2, chartype c) my_noexcept {
 		if (!in_range(x1, y1)) return ERR;
 		// (x1, y1) MUST be in range
