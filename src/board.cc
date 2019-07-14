@@ -86,32 +86,16 @@ namespace graph {
 		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) < 1) {
 			// Close to horizontal
 			double m = (y2 - y1) * 1.0 / (x2 - x1);
-			if (x1 < x2) {
-				for (int x = x1, y = 0; x <= x2 && in_range(x, y); ++x) {
-					y = static_cast<int>(m * (x - x1) + y1);
-					if (in_range(x, y)) operator()(x, y) = c;
-				}
-			} else {
-				// x1 > x2
-				for (int x = x1, y = 0; x >= x2 && in_range(x, y); --x) {
-					y = static_cast<int>(m * (x - x1) + y1);
-					if (in_range(x, y)) operator()(x, y) = c;
-				}
+			for (int x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
+				y = static_cast<int>(m * (x - x1) + y1);
+				if (in_range(x, y)) operator()(x, y) = c;
 			}
 		} else {
 			// Close to vertical
 			double m = (x2 - x1) * 1.0 / (y2 - y1);
-			if (y1 < y2) {
-				for (int y = y1, x = 0; y <= y2 && in_range(x, y); ++y) {
-					x = static_cast<int>(m * (y - y1) + x1);
-					if (in_range(x, y)) operator()(x, y) = c;
-				}
-			} else {
-				// x1 > x2
-				for (int y = y1, x = 0; y >= y2 && in_range(x, y); --y) {
-					x = static_cast<int>(m * (y - y1) + x1);
-					if (in_range(x, y)) operator()(x, y) = c;
-				}
+			for (int y = y1, x = 0; (y1 < y2 ? y <= y2 : y >= y2) && in_range(x, y); y += (y1 < y2 ? 1 : -1)) {
+				x = static_cast<int>(m * (y - y1) + x1);
+				if (in_range(x, y)) operator()(x, y) = c;
 			}
 		}
 #endif
