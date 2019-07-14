@@ -84,14 +84,14 @@ namespace graph {
 			// Close to horizontal
 			double m = (y2 - y1) * 1.0 / (x2 - x1);
 			for (int x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
-				y = static_cast<int>(m * (x - x1) + y1);
+				y = static_cast<int>(m * (x - x1 - 0.5) + y1 + 0.5);
 				if (in_range(x, y)) operator()(x, y) = c;
 			}
 		} else {
 			// Close to vertical
 			double m = (x2 - x1) * 1.0 / (y2 - y1);
 			for (int y = y1, x = 0; (y1 < y2 ? y <= y2 : y >= y2) && in_range(x, y); y += (y1 < y2 ? 1 : -1)) {
-				x = static_cast<int>(m * (y - y1) + x1);
+				x = static_cast<int>(m * (y - y1 - 0.5) + x1 + 0.5);
 				if (in_range(x, y)) operator()(x, y) = c;
 			}
 		}
