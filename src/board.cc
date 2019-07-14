@@ -31,22 +31,20 @@ namespace graph {
 
 	Board::Board(WINDOW* w, chartype f) : Board(getmaxx(w), getmaxy(w), f, w) {
 		assert(win != nullptr);
-		assert(getmaxx(w) != ERR);
-		assert(getmaxy(w) != ERR);
 	}
 
 	auto Board::operator() (int x, int y) const -> chartype {
 		if (in_range(x, y)) return map.at(w * (c_y + y) + c_x + x);
-		else throw std::out_of_range("base_map::operator() out of range");
+		else throw std::out_of_range("Board::operator() out of range");
 	}
 	auto Board::operator() (int x, int y) -> chartype& {
 		if (in_range(x, y)) return map.at(w * (c_y + y) + c_x + x);
-		else throw std::out_of_range("base_map::operator() out of range");
+		else throw std::out_of_range("Board::operator() out of range");
 	}
 
 	auto Board::at (size_t x, size_t y) const -> chartype {
 		if (x < w && y < h) return map.at(w * (opts.invy ? h - y - 1: y) + (opts.invx ? w - x - 1 : x));
-		else throw std::out_of_range("base_map::operator() out of range");
+		else throw std::out_of_range("Board::operator() out of range");
 	}
 
 	bool Board::in_range(int x, int y) const my_noexcept {
