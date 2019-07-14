@@ -50,7 +50,7 @@ namespace graph {
 	}
 
 	bool Board::in_range(int x, int y) const my_noexcept {
-		return x >= minx() && x < maxx() && y >= miny() && y < maxy();
+		return x >= minx() && x <= maxx() && y >= miny() && y <= maxy();
 	}
 
 	int Board::display () const {
@@ -74,7 +74,7 @@ namespace graph {
 		// (x1, y1) MUST be in range
 		
 		// Naive point slope form
-#if 1
+#if 0
 		double m = (y2 - y1) * 1.0 / (x2 - x1);
 		for (int x = x1, y = 0; x <= x2 && x < maxx(); ++x) {
 			y = static_cast<int>(m * (x - x1) + y1);
@@ -84,20 +84,34 @@ namespace graph {
 		if (x1 == x2 && y1 == y2) {
 			operator()(x1, y1) = c; // Guaranteed in_range by above check
 		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) < 1) {
+			// Close to horizontal
 			double m = (y2 - y1) * 1.0 / (x2 - x1);
-			if (m < 0) {
-				for (int x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
+			if (x1 < x2) {
+				for (int x = x1, y = 0; x <= x2 && in_range(x, y); ++x) {
 					y = static_cast<int>(m * (x - x1) + y1);
 					if (in_range(x, y)) operator()(x, y) = c;
 				}
 			} else {
-
+				// x1 > x2
+				for (int x = x1, y = 0; x >= x2 && in_range(x, y); --x) {
+					y = static_cast<int>(m * (x - x1) + y1);
+					if (in_range(x, y)) operator()(x, y) = c;
+				}
 			}
 		} else {
+			// Close to vertical
 			double m = (x2 - x1) * 1.0 / (y2 - y1);
-			for (size_t y = y1, x = 0; (y1 < y2 ? y <= y2 : y >= y2) && in_range(x, y); y += (m < 0 ? -1 : 1)) {
-				x = static_cast<size_t>(m * (y - y1) + x1);
-				if (in_range(x, y)) operator()(x, y) = c;
+			if (y1 < y2) {
+				for (int y = y1, x = 0; y <= y2 && in_range(x, y); ++y) {
+					x = static_cast<int>(m * (y - y1) + x1);
+					if (in_range(x, y)) operator()(x, y) = c;
+				}
+			} else {
+				// x1 > x2
+				for (int y = y1, x = 0; y >= y2 && in_range(x, y); --y) {
+					x = static_cast<int>(m * (y - y1) + x1);
+					if (in_range(x, y)) operator()(x, y) = c;
+				}
 			}
 		}
 #endif

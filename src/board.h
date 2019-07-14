@@ -70,10 +70,10 @@ namespace graph {
 		decltype(h) height () const my_noexcept { return h; }
 #endif
 		// NOTE: minx/y functions were written after midnight, so they're error-prone I guess.
-		// Output minimums and maximums of the form [min, max)
-		int maxx () const my_noexcept { return static_cast<int>(w - c_x); }
+		// Output minimums and maximums of the form [min, max]
+		int maxx () const my_noexcept { return static_cast<int>(w - c_x - 1); }
 		int minx () const my_noexcept { return static_cast<int>(c_x) * -1; }
-		int maxy () const my_noexcept { return static_cast<int>(h - c_y); }
+		int maxy () const my_noexcept { return static_cast<int>(h - c_y - 1); }
 		int miny () const my_noexcept { return static_cast<int>(c_y) * -1; }
 
 		chartype operator[] (size_t n) const { return map[n]; }
