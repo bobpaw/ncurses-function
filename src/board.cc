@@ -125,10 +125,10 @@ namespace graph {
 
 	void Board::draw_axes (bool xaxis, bool yaxis) my_noexcept {
 		if (xaxis)
-			for (int x = minx(); x < maxx(); ++x)
+			for (int x = minx(); x <= maxx(); ++x)
 				operator()(x, 0) = '-';
 		if (yaxis)
-			for (int y = miny(); y < maxy(); ++y)
+			for (int y = miny(); y <= maxy(); ++y)
 				operator()(0, y) = '|';
 		if (xaxis && yaxis)
 			operator()(0, 0) = '+';
