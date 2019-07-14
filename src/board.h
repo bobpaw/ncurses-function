@@ -83,7 +83,7 @@ namespace graph {
 		auto operator() (int x, int y) -> chartype&;
 
 		bool in_range(int x, int y) const my_noexcept;
-		void set_center(size_t x, size_t y) my_noexcept { c_x = x; c_y = y; }
+		void set_center(size_t x, size_t y);
 		void draw_axes (bool xaxis = true, bool yaxis = true) my_noexcept;
 		void invert_x (bool val = true) my_noexcept { opts.invx = val; }
 		void invert_y (bool val = true) my_noexcept { opts.invy = val; }

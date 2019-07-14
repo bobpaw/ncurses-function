@@ -116,4 +116,10 @@ namespace graph {
 		if (xaxis && yaxis)
 			operator()(0, 0) = '+';
 	}
+
+	void Board::set_center(size_t x, size_t y) {
+		if (!(x < w && y < h)) throw std::out_of_range("Board::set_center - x or y out of bounds.");
+		c_x = x;
+		c_y = y;
+	}
 } // namespace graph
