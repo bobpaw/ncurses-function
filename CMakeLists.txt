@@ -32,7 +32,7 @@ if (USE_PDCURSES)
 	set(PDCURSES_SRCDIR "C:/PDCurses" CACHE FILEPATH "PDCurses' Source Directory")
 	set(PDCURSES_LIBRARIES "C:/PDCurses/wincon/pdcurses.lib" CACHE FILEPATH "PDCurses Library")
 else()
-	include(FindCurses)
+	find_package(Curses REQUIRED)
 endif()
 
 # Large number of compiler flags (but not unreasonable, i.e. not VS's -Wall)
