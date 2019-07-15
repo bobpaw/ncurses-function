@@ -79,8 +79,8 @@ int main () {
 			std::cerr << "Error drawing line" << std::endl;
 			return -1;
 		}
-		board(x1, y1) = 'A';
-		board(x2, y2) = 'B';
+		if (board.in_range(x1, y1)) board(x1, y1) = 'A';
+		if (board.in_range(x2, y2)) board(x2, y2) = 'B';
 		board.display();
 		refresh();
 	} while (ch != 'q');
