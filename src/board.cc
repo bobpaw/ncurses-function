@@ -80,7 +80,14 @@ namespace graph {
 #else
 		if (x1 == x2 && y1 == y2) {
 			operator()(x1, y1) = c; // Guaranteed in_range by above check
-		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) < 1) {
+		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) == 1.0) {
+			// Close to horizontal or nicely 45 degrees
+			int m = (y2 - y1) / (x2 - x1);
+			for (int x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {
+				y = static_cast<int>(m * (x - x1) + y1);
+				if (in_range(x, y)) operator()(x, y) = c;
+			}
+		} else if (x2 != x1 && std::abs((y2 - y1) * 1.0 / (x2 - x1)) < 1.0) {
 			// Close to horizontal
 			double m = (y2 - y1) * 1.0 / (x2 - x1);
 			for (int x = x1, y = 0; (x1 < x2 ? x <= x2 : x >= x2) && in_range(x, y); x += (x1 < x2 ? 1 : -1)) {

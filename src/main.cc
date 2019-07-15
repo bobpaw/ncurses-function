@@ -35,9 +35,9 @@ int main () {
 	graph::Board board(stdscr, ' ');
 	board.set_center(COLS / 2, LINES / 2);
 	board.invert_y(true);
-	int x = 5, y = 5, ch = 0;
+	int x1 = 0, y1 = 0, x2 = 5, y2 = 5, ch = 0, moving = 1;
 	board.draw_axes();
-	if (board.line(0, 0, x, y) == ERR) {
+	if (board.line(x1, y1, x2, y2) == ERR) {
 		endwin();
 		std::cerr << "Error drawing line" << std::endl;
 		return EXIT_FAILURE;
@@ -51,28 +51,36 @@ int main () {
 		switch (ch) {
 		case KEY_LEFT:
 		case 'a':
-			--x;
+			if (moving == 1) --x2;
+			else --x1;
 			break;
 		case KEY_RIGHT:
 		case 'd':
-			++x;
+			if (moving == 1) ++x2;
+			else ++x1;
 			break;
 		case KEY_UP:
 		case 'w':
-			++y;
+			if (moving == 1) ++y2;
+			else ++y1;
 			break;
 		case KEY_DOWN:
 		case 's':
-			--y;
+			if (moving == 1) --y2;
+			else --y1;
 			break;
+		case 'e':
+			moving ^= 1;
 		}
 		if (board.clear(true) == ERR) CURSES_ERROR(erase);
 		board.draw_axes();
-		if (board.line(0, 0, x, y) == ERR) {
+		if (board.line(x1, y1, x2, y2) == ERR) {
 			endwin();
 			std::cerr << "Error drawing line" << std::endl;
 			return -1;
 		}
+		board(x1, y1) = 'A';
+		board(x2, y2) = 'B';
 		board.display();
 		refresh();
 	} while (ch != 'q');
