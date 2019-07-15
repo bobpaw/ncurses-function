@@ -17,15 +17,7 @@ std::cerr << "curses error (" #func "): " msg << std::endl; \
 return EXIT_FAILURE; \
 } while (0)
 
-void exit_func () {
-	if (!isendwin()) endwin();
-}
-
 int main () {
-	if (std::atexit(exit_func) != 0) {
-		std::cerr << "atexit failure" << std::endl;
-		return EXIT_FAILURE;
-	}
 	if (initscr() == NULL) CURSES_ERROR(initscr);
 	if (curs_set(0) == ERR) CURSES_ERROR(curs_set);
 	if (noecho() == ERR) CURSES_ERROR(noecho);
