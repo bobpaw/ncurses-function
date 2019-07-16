@@ -81,6 +81,18 @@ namespace graph {
 
 		auto operator() (int x, int y) const -> chartype;
 		auto operator() (int x, int y) -> chartype&;
+		
+		/* set_range (int x, int y, const_iterator begin, const_iterator end, bool vertical = false)
+		If vertical is true, prints low y to high y as much as possible. Returns ERR on out of range (x,y), but never throws.
+		*/
+		template <typename I>
+		typename std::enable_if<std::is_convertible<typename std::iterator_traits<I>::value_type, chartype>::value, int>::type
+			set_range (int x, int y, const I &begin, const I &end, bool vertical = false) my_noexcept {
+			if (!in_range(x, y)) return ERR;
+			for (I iter = begin; iter != end && in_range(x, y); vertical ? ++y : ++x, std::advance(iter, 1))
+				operator()(x, y) = *iter;
+			return OK;
+		}
 
 		bool in_range(int x, int y) const my_noexcept;
 

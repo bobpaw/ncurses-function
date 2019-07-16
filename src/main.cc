@@ -1,5 +1,6 @@
 #include <iostream> // std::cerr
 #include <cstdlib> // std::atexit, EXIT_SUCCESS, EXIT_FAILURE
+#include <string> // std::string, std::to_string
 
 #include "correct_curses.h"
 
@@ -36,6 +37,8 @@ int main () {
 	}
 	board.display();
 	if (refresh() == ERR) CURSES_ERROR(refresh);
+	std::string coord_str = "(" + std::to_string(x1) + "," + std::to_string(y1) + ")-(" +
+		std::to_string(x2) + "," + std::to_string(y2) + ")";
 	do {
 		ch = getch();
 		if (ch == ERR) CURSES_ERROR(getch);
@@ -73,6 +76,9 @@ int main () {
 		}
 		if (board.in_range(x1, y1)) board(x1, y1) = 'A';
 		if (board.in_range(x2, y2)) board(x2, y2) = 'B';
+		coord_str = "(" + std::to_string(x1) + "," + std::to_string(y1) + ")-(" +
+			std::to_string(x2) + "," + std::to_string(y2) + ")";
+		board.set_range(board.minx(), board.maxy(), coord_str.cbegin(), coord_str.cend());
 		board.display();
 		refresh();
 	} while (ch != 'q');
