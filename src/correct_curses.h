@@ -1,9 +1,7 @@
-#if defined(HAVE_CONFIG_H) || defined(HAVE_CMAKE_CONFIG_H) // FIXME(Aiden): This is a CMake project, so HAVE_CONFIG_H won't be defined. Also get rid of impossible if's.
-#if defined(HAVE_CONFIG_H)
-#include <config.h>
-#else
+#ifndef GRAPH_CORRECT_CURSES_H
+#define GRAPH_CORRECT_CURSES_H
+#if defined(HAVE_CMAKE_CONFIG_H)
 #include <cmakeconfig.h>
-#endif
 
 #if defined HAVE_NCURSESW_CURSES_H
 #  include <ncursesw/curses.h>
@@ -23,3 +21,4 @@
 // Fingers-crossed
 #include <curses.h>
 #endif
+#endif // GRAPH_CORRECT_CURSES_H
