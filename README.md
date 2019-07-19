@@ -1,2 +1,2 @@
-# ncurses-function
+# ncurses-function [![Build Status](https://travis-ci.org/bobpaw/ncurses-function.svg?branch=master)](https://travis-ci.org/bobpaw/ncurses-function) [![Total alerts](https://img.shields.io/lgtm/alerts/g/bobpaw/ncurses-function.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bobpaw/ncurses-function/alerts/) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/bobpaw/ncurses-function.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bobpaw/ncurses-function/context:cpp)
 Supposedly displays a function in ncurses
